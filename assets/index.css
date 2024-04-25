@@ -1,0 +1,1 @@
+@font-face{font-family:silkscreen;src:url(../fonts/silkscreen.ttf) format("truetype");font-weight:400;font-style:normal}html,body{background:#333;margin:0;padding:0}p.hidden-text{font-family:silkscreen;height:.1;color:transparent;visibility:hidden}
