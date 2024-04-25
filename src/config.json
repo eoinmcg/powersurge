@@ -1,0 +1,11 @@
+{
+  "title": "POWERSURGE",
+  "width": 320,
+  "height": 480,
+  "tileSize": 32,
+  "resize": true,
+  "debug": true,
+  "start": "start",
+  "startLevel": 1,
+  "lives": 3
+}

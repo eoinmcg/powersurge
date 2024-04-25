@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'silkscreen';
+    src: url('/fonts/silkscreen.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+ background: #333;
+ margin: 0;
+ padding: 0;
+}
+
+/* canvas { cursor: none; } */
+
+p.hidden-text { font-family: 'silkscreen'; height: 0.1; color: transparent; visibility: hidden; }
