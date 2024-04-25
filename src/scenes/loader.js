@@ -18,6 +18,10 @@ export default class Loader extends Phaser.Scene {
     this.load.image('logo', 'i/logo.gif')
     this.load.image('logo_no_s', 'i/logo_no_s.gif')
 
+    this.load.image('splat0', 'i/splat0.gif')
+    this.load.image('splat1', 'i/splat2.gif')
+    this.load.image('splat2', 'i/splat2.gif')
+
     // ui
     this.load.image('pointer', 'i/pointer.gif')
     this.load.image('x', 'i/x.gif')

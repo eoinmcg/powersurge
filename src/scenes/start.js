@@ -29,7 +29,7 @@ export default class Start extends BaseScene {
       ease: 'Ease.In'
     })
 
-    this.skull = this.add.image( 200, 300, 'skull')
+    this.skull = this.add.image(200, 300, 'skull')
       .setScale(60)
       .setRotation(-0.2)
       .setAlpha(0.02);

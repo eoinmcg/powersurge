@@ -82,11 +82,21 @@ export default class Base extends Phaser.Physics.Arcade.Sprite {
 
     kill() {
         if (!this.onScreen || this.dead) { return; }
+
+        let tile = this.scene.map.getTileAtWorldXY(this.x, this.y);
+        if (tile.index === 2) {
+            this.scene.add.image(this.x, this.y, 'splat' + ~~(Math.random() * 2))
+                .setScale(4)
+                .setAlpha(0.25)
+        }
+
+
         if (this.shadow) {
             this.shadow.destroy();
         }
         this.dead = true;
         this.destroy();
+
     }
 
     onScreen() {
