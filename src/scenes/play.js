@@ -257,7 +257,7 @@ export default class Play extends BaseScene {
 
   doScroll() {
     if (this.player.dead) { return; }
-    let scrollY = 0.25;
+    let scrollY = (this.data.level === 1) ? 0 : 0.25;
     // scrollY = 0;
     if (this.player.y - this.cameras.main.scrollY > 300) {
       scrollY = 1;
@@ -274,7 +274,6 @@ export default class Play extends BaseScene {
     dist = dist || config.tileSize * 1
     let currentY = this.cameras.main.scrollY;
     let nextY = currentY + (dist);
-    let screenH = config.height / config.tileSize;
 
     if (nextY + config.height >= this.map.height * config.tileSize) {
       return;
@@ -295,7 +294,6 @@ export default class Play extends BaseScene {
     this.tweens.add({
       targets: this.flash,
       scale: 500,
-      // tint: 0x990000,
       yoyo: yoyo,
       duration: speed,
       onComplete: () => {
