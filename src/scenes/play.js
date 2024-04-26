@@ -61,14 +61,25 @@ export default class Play extends BaseScene {
     this.gameOver = false;
     this.prevScrollPos = 0;
 
-    console.log('START LEVEL: ', this.data.level);
-
   }
 
   create() {
     let keyI = this.input.keyboard.addKey('I');
       keyI.on('up', () => {
         this.flashBg(0xaa00aa);
+    });
+
+
+    let keyH = this.input.keyboard.addKey('H');
+    keyH.on('up', () => {
+      this.overlay.x = (this.overlay.x === 0)
+        ? -this.config.width : 0;
+      this.overlay.y = this.cameras.main.scrollY;
+    });
+
+    let keyEsc = this.input.keyboard.addKey('Esc');
+    keyEsc.on('up', () => {
+      this.overlay.x = -this.config.width;
     });
 
     this.moveShadow = this.add.text(10, 14, this.player.turns, {
@@ -82,6 +93,28 @@ export default class Play extends BaseScene {
         fontSize: '28px'
       }).setDepth(6);
 
+    this.overlay = this.add.image(-this.config.width,0,'overlay').setOrigin(0, 0).setDepth(10);
+
+    if (this.data.level === 1) {
+      this.helpText = this.add.text(this.centerX, 70, 'H FOR HELP', {
+        color: 'white',
+        fontFamily: 'silkscreen',
+        fontSize: '24px'
+      }).setOrigin(0.5);
+      this.tweens.add({
+        targets: this.helpText,
+        duration: 2000,
+        alpha: 0,
+        ease: 'Linear',
+        onComplete: () => {
+          this.helpText.destroy();
+        }
+
+      });
+
+    }
+
+    this.turn = this.add.image(300, 25, 'turn').setFrame(0).setScale(2.5);
     this.updateTiles();
   }
 
@@ -166,13 +199,23 @@ export default class Play extends BaseScene {
 
     this.doScroll();
     this.drawShadows();
+    this.updateUI();
 
+
+    this.prevScrollPos = scrollPos;
+  }
+
+  updateUI() {
     this.moveText.setText(this.player.turns);
     this.moveShadow.setText(this.player.turns);
     this.moveText.y = this.cameras.main.scrollY + 10;
     this.moveShadow.y = this.moveText.y + 4;
-
-    this.prevScrollPos = scrollPos;
+    this.turn.y = this.cameras.main.scrollY + 25;
+    if (this.player.moving) {
+      this.turn.setFrame(1);
+    } else {
+      this.turn.setFrame(0);
+    }
   }
 
 

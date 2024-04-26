@@ -28,6 +28,7 @@ export default class Loader extends Phaser.Scene {
     this.load.image('heart', 'i/heart.gif');
     this.load.image('battery', 'i/battery.gif');
     this.load.image('charge_icon', 'i/charge_icon.gif');
+    this.load.image('overlay', 'i/overlay.png');
 
     //
     this.load.image('lazer', 'i/lazer.gif');
@@ -49,6 +50,7 @@ export default class Loader extends Phaser.Scene {
     this.load.spritesheet('beastie', 'i/beastie.gif', { frameWidth: 8, frameHeight: 8 });
     this.load.spritesheet('lamp', 'i/lamp.gif', { frameWidth: 8, frameHeight: 8 });
     this.load.spritesheet('switch', 'i/switch.gif', { frameWidth: 20, frameHeight: 32 });
+    this.load.spritesheet('turn', 'i/turn.gif', { frameWidth: 8, frameHeight: 8 });
 
     this.loadLabel = this.add.text(config.width / 2,config.height / 2, '0%',
       { font: '50px silkscreen', fill: '#fff' });
