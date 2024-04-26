@@ -24,3 +24,5 @@ Errm...
 Power surges are breaking everything!  
 Journey to the heart of the machine and power it off!  
 You are our only hope!  
+
+### [Play](https://eoinmcg.itch.io/powersurge)
