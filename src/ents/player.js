@@ -44,6 +44,10 @@ export default class Player extends Base {
 
         this.body.setSize(4, 4);
         this.turns = 0;
+        this.moves = 0;
+        this.skips = 0;
+        this.shots = 0;
+        this.kills = 0;
 
     }
 
@@ -53,10 +57,13 @@ export default class Player extends Base {
         this.scene.updateTiles();
         this.turns += 1;
         if (skip) {
+            this.skips += 1;
             return this.skipTurn(duration);
         } else if (shoot) {
+            this.shots += 1;
             return this.shoot(duration);
         } else {
+            this.moves += 1;
             return this.moveTo(x, y, duration);
         }
     }
@@ -196,5 +203,14 @@ export default class Player extends Base {
           scene.boom(this, 6);
           this.kill();
         });
+    }
+
+    stats() {
+        return {
+            turns: this.turns,
+            moves: this.moves,
+            shots: this.shots,
+            kills: this.kills,
+        }
     }
 }

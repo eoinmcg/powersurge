@@ -71,6 +71,17 @@ export default class Play extends BaseScene {
         this.flashBg(0xaa00aa);
     });
 
+    this.moveShadow = this.add.text(10, 14, this.player.turns, {
+        color: 'black',
+        fontFamily: 'silkscreen',
+        fontSize: '28px'
+      }).setDepth(6);
+    this.moveText = this.add.text(10, 10, this.player.turns, {
+        color: 'white',
+        fontFamily: 'silkscreen',
+        fontSize: '28px'
+      }).setDepth(6);
+
     this.updateTiles();
   }
 
@@ -155,6 +166,11 @@ export default class Play extends BaseScene {
 
     this.doScroll();
     this.drawShadows();
+
+    this.moveText.setText(this.player.turns);
+    this.moveShadow.setText(this.player.turns);
+    this.moveText.y = this.cameras.main.scrollY + 10;
+    this.moveShadow.y = this.moveText.y + 4;
 
     this.prevScrollPos = scrollPos;
   }
@@ -253,6 +269,7 @@ export default class Play extends BaseScene {
     this.boom(source, 6);
     baddie.setTint(0xaa0000);
     baddie.kill();
+    this.player.kills += 1;
   }
 
 
@@ -306,6 +323,8 @@ export default class Play extends BaseScene {
   levelComplete() {
     if (this.switch.state === 'off') { return; }
 
+    console.log(this.player.stats());
+
       this.switch.deactivate();
       let startY = this.cameras.main.scrollY + (config.height / 2);
       this.completeText = this.add.text(this.centerX, startY -200, 'SUCCESS!', {
@@ -313,7 +332,7 @@ export default class Play extends BaseScene {
           fontFamily: 'silkscreen',
           fontSize: '42px'
         });
-      this.completeText.setOrigin(0.5, 0.5);
+      this.completeText.setOrigin(0.5, 0.5).setDepth(6);
       this.flashBg(0x9de64e, 1000, false);
       this.tweens.add({
         targets: this.completeText,
@@ -346,13 +365,17 @@ export default class Play extends BaseScene {
     if (this.gameOver) return;
     this.gameOver = true;
 
+    console.log(this.player.stats());
+
     let startY = this.cameras.main.scrollY + (config.height / 2);
     this.gameOverText = this.add.text(this.centerX, startY -200, 'GAME OVER', {
         color: 'hotpink',
         fontFamily: 'silkscreen',
         fontSize: '42px'
       });
-    this.gameOverText.setOrigin(0.5, 0.5);
+    this.gameOverText
+      .setDepth(6)
+      .setOrigin(0.5, 0.5);
     this.tweens.add({
       targets: this.gameOverText,
       y: startY,
@@ -377,7 +400,7 @@ export default class Play extends BaseScene {
     this.replayButton = this.add.text(this.cameras.main.centerX,
       this.gameOverText.y + 50, 'REPLAY', { fontFamily: 'silkscreen'})
       .setOrigin(0.5)
-      .setDepth(0)
+      .setDepth(6)
       .setPadding(10)
       .setFixedSize(90, 40)
       .setStyle({ align: 'center' })

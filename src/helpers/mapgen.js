@@ -63,8 +63,6 @@ export default class Mapgen {
 
 
         keys = this.shuffle(keys);
-        window.keys = keys;
-        console.log('KEYS: ', keys);
 
         let data = [];
 
@@ -133,6 +131,7 @@ export default class Mapgen {
             [2,2,2,2,2,2,2,2,2,2],
             [2,2,2,2,2,2,2,2,2,2],
             [2,2,2,2,2,2,8,2,2,2],
+            [7,7,7,7,7,7,7,7,7,7],
         ];
 
         const from = this.mapData.length;
