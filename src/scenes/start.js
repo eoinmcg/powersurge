@@ -1,6 +1,5 @@
 import BaseScene from './BaseScene';
 import config from '../config.json';
-import {version} from '../../package.json';
 
 
 export default class Start extends BaseScene {
@@ -25,7 +24,22 @@ export default class Start extends BaseScene {
       targets: this.text,
       y: 200,
       duration: 1000,
-      ease: 'Ease.In'
+      ease: 'Ease.In',
+      onComplete: () => {
+          this.promptText = this.add.text(this.centerX, config.height - 100, 'PRESS A KEY', {
+              color: 'white',
+              fontFamily: 'silkscreen',
+              fontSize: '16px'
+            });
+        this.tweens.add({
+          targets: this.promptText,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Linear',
+          yoyo: true,
+          repeat: -1
+        })
+      }
     })
 
     this.skull = this.add.image(200, 300, 'skull')

@@ -64,6 +64,10 @@ export default class Mapgen {
 
         keys = this.shuffle(keys);
 
+        if (keys.includes['sparks0'] && keys.includes['sparks1']) {
+            keys.splice(keys.indexOf('sparks0'));
+        }
+
         let data = [];
 
         data = data.concat(this.insertStartSegment());
