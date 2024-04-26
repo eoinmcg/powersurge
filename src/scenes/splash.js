@@ -1,7 +1,6 @@
-import * as Phaser from 'phaser';
 import BaseScene from './BaseScene';
 import config from '../config.json';
-import sfx from '../helpers/sfx';
+import {version} from '../../package.json';
 
 
 export default class Splash extends BaseScene {
@@ -45,6 +44,11 @@ export default class Splash extends BaseScene {
       this.addSurge();
     });
 
+    this.versionText = this.add.text(20, config.height - 30, `v${version}`, {
+        color: 'white',
+        fontFamily: 'silkscreen',
+        fontSize: '18px'
+      }).setAlpha(0.5);
   }
 
 

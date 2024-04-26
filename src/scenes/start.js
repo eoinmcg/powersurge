@@ -1,7 +1,6 @@
-import * as Phaser from 'phaser';
 import BaseScene from './BaseScene';
 import config from '../config.json';
-import sfx from '../helpers/sfx';
+import {version} from '../../package.json';
 
 
 export default class Start extends BaseScene {
@@ -54,6 +53,4 @@ export default class Start extends BaseScene {
 
   }
 
-
 }
-
