@@ -3,7 +3,7 @@
 VER=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
 COMMIT=$(git rev-parse --short=6 HEAD)
 
-FILE="powersurge-${COMMIT}.zip"
+FILE="powersurge-${COMMIT}-${VER}.zip"
 
 rm *.zip
 zip -r $FILE dist/
