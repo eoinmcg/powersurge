@@ -188,7 +188,7 @@ export default class Splash extends BaseScene {
         if (!this.started) {
           this.started = true;
           this.sfx('blip');
-          this.scene.start('play', this.data);
+          this.scene.start('help', this.data);
         }
       })
       .on('pointerover', () => {
@@ -210,7 +210,7 @@ export default class Splash extends BaseScene {
       ease: 'Bounce.In.Out',
       duration: 1000,
       onComplete: () => {
-        this.addHelpButton();
+        // this.addHelpButton();
       }
     });
   }
