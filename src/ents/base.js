@@ -85,9 +85,7 @@ export default class Base extends Phaser.Physics.Arcade.Sprite {
 
         let tile = this.scene.map.getTileAtWorldXY(this.x, this.y);
         if (tile.index === 2) {
-            this.scene.add.image(this.x, this.y, 'splat' + ~~(Math.random() * 2))
-                .setScale(4)
-                .setAlpha(0.25)
+            this.addSplat();
         }
 
 
@@ -97,6 +95,15 @@ export default class Base extends Phaser.Physics.Arcade.Sprite {
         this.dead = true;
         this.destroy();
 
+    }
+
+    addSplat() {
+        const key = Math.floor(Math.random() * 3);
+        this.scene.splats.push(
+        this.scene.add.image(this.x, this.y, 'splat' + key)
+            .setScale(4)
+            .setAlpha(0.25)
+        );
     }
 
     onScreen() {

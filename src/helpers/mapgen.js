@@ -1,17 +1,18 @@
 export default class Mapgen {
 
-    constructor(config, scene, h) {
+    constructor(config, scene, level) {
 
-        this.h = h;
-        this.tileSize = 32;
+        this.level = level;
+        this.tileSize = config.tileSize;
+        this.screenHeightInTiles = config.height / this.tileSize;
         this.mapWidth = scene.cameras.main.width / this.tileSize;
-        this.mapHeight = h;
 
         this.mapData = [];
         this.segments = this.getSegments();
         window.M = this;
         this.mapData = this.createMap();
         this.mapData = this.polishMap(this.mapData);
+        this.mapHeight = this.mapData.length * this.tileSize;
 
         scene.map = scene.make.tilemap({ data: this.mapData, tileWidth: 32, tileHeight: 32 });
         this.tiles = scene.map.addTilesetImage('tiles');
@@ -52,17 +53,26 @@ export default class Mapgen {
     createMap() {
 
         let keys = Object.keys(this.segments);
-        keys.push('rand0');
+        keys.push('rnd');
+
+        if (this.level === 1) {
+            keys = ['face0', 'bridge0', 'rnd'];
+        } else {
+            keys.splice(this.level + 1);
+        }
+
+
+        keys = this.shuffle(keys);
+        window.keys = keys;
 
         let data = [];
 
         data = data.concat(this.insertStartSegment());
-        while(data.length < this.mapHeight) {
-            let segment = keys[Math.floor(Math.random() * keys.length)];
+        while(keys.length > 0) {
+            let segment = keys.pop();
+            console.log('ADDING SEGMENT:', segment);
             data = data.concat(this.insert(segment));
         }
-
-        console.log('CREATED', data.length, this.h);
 
         data = data.concat(this.insertEndSegment());
         return data;
@@ -144,49 +154,60 @@ export default class Mapgen {
         let L = 19;
 
 
-        // segments.face0 = [
-        //     [2,2,2,2,2,2,2,2,2,2],
-        //     [2,0,0,2,2,2,2,0,0,2],
-        //     [2,0,0,2,2,2,2,0,0,2],
-        //     [2,S,2,2,2,2,2,2,S,2],
-        //     [2,0,0,0,0,0,0,0,0,2],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        // ];
+        segments.face0 = [
+            [2,2,2,2,2,2,2,2,2,2],
+            [2,0,0,2,2,2,2,0,0,2],
+            [2,0,0,2,2,2,2,0,0,2],
+            [2,2,2,L,2,2,L,2,2,2],
+            [2,S,2,2,2,2,2,2,S,2],
+            [2,5,5,5,5,5,5,5,5,2],
+            [2,2,2,2,2,2,2,2,2,2],
+        ];
 
-        // segments.move0 = [
-        //     [3,2,2,2,2,2,2,2,2,2],
-        //     [5,5,5,5,5,5,5,5,5,5],
-        //     [6,6,6,6,6,6,6,6,6,6],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        //     [2,2,2,7,2,2,2,2,2,2],
-        //     [5,5,5,5,5,5,5,5,5,5],
-        //     [6,6,6,6,6,6,6,6,6,6],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        // ];
+        segments.move0 = [
+            [3,2,2,2,2,2,2,2,2,3],
+            [5,5,5,5,5,5,5,5,5,5],
+            [6,6,6,6,6,6,6,6,6,6],
+            [2,3,2,2,2,2,2,2,3,2],
+            [S,2,2,2,2,2,2,2,2,2],
+            [5,5,5,5,5,5,5,5,5,5],
+            [6,6,6,6,6,6,6,6,6,6],
+            [2,2,2,2,2,2,2,2,2,2],
+            [2,2,2,2,2,2,2,2,2,2],
+        ];
 
-        // segments.sparks0 = [
-        //     [3,3,3,3,3,3,3,3,3,3],
-        //     [4,4,4,4,4,4,4,4,4,4],
-        //     [5,5,5,5,5,5,5,5,5,5],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        //     [3,3,3,3,3,3,3,3,3,3],
-        //     [4,4,4,4,4,4,4,4,4,4],
-        //     [5,5,5,5,5,5,5,5,5,5],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        // ];
+        segments.sparks0 = [
+            [3,4,3,4,3,4,3,4,3,4],
+            [4,3,4,3,4,3,4,3,4,3],
+            [3,4,3,4,3,4,3,4,3,4],
+            [4,3,4,3,4,3,4,3,4,3],
+            [3,4,3,4,3,4,3,4,3,4],
+            [2,2,2,2,2,2,2,2,2,2],
+            [2,2,L,2,S,2,2,L,2,2],
+        ];
 
-        // segments.brige0 = [
-        //     [2,2,2,2,2,2,2,2,2,2],
-        //     [2,0,0,0,2,2,0,0,0,2],
-        //     [2,0,0,0,2,2,0,0,0,2],
-        //     [2,0,0,0,2,2,0,0,0,2],
-        //     [2,0,0,0,2,2,0,0,0,2],
-        //     [2,2,2,2,S,S,2,2,2,2],
-        //     [2,0,0,2,2,2,2,0,0,2],
-        //     [2,0,0,2,2,2,2,0,0,2],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        // ];
+        segments.sparks1 = [
+            [3,4,3,4,3,4,3,4,3,4],
+            [L,3,4,3,4,3,4,3,4,3],
+            [3,4,3,4,3,4,3,4,3,L],
+            [2,3,4,3,4,3,4,3,4,3],
+            [3,4,3,4,3,4,3,4,3,2],
+            [2,2,2,2,2,2,2,2,2,2],
+            [2,2,L,2,S,2,2,L,2,2],
+        ];
+
+        segments.brige0 = [
+            [2,2,2,2,2,2,2,2,2,2],
+            [2,0,0,0,2,2,0,0,0,2],
+            [2,0,0,0,2,2,0,0,0,2],
+            [C,0,0,0,2,2,0,0,0,C],
+            [2,0,0,0,2,2,0,0,0,2],
+            [2,2,2,2,S,S,2,2,2,2],
+            [2,0,0,2,2,2,2,0,0,2],
+            [2,0,0,2,2,2,2,0,0,2],
+            [2,2,2,2,2,2,2,2,2,2],
+        ];
+
         segments.eye0 = [
             [2,2,2,2,2,2,2,2,2,2],
             [2,0,2,0,2,0,2,0,2,0],
@@ -208,20 +229,37 @@ export default class Mapgen {
             [2,0,2,0,0,0,0,2,0,2],
             [C,0,2,0,0,0,0,2,0,C],
             [2,0,2,0,0,0,0,2,0,2],
-            [3,2,2,S,2,2,2,2,2,2],
+            [2,2,2,S,2,2,2,2,2,2],
             [2,2,2,2,2,2,2,2,2,2],
         ];
 
-        // segments.brige2 = [
-        //     [2,2,2,2,2,2,2,2,2,2],
-        //     [2,2,2,2,2,2,2,2,2,2],
-        //     [C,2,2,2,2,2,2,2,2,C],
-        //     [2,0,0,0,0,0,0,0,0,2],
-        //     [2,0,0,0,0,0,0,0,0,2],
-        //     [2,2,2,E,2,2,2,2,2,2],
-        // ];
+        segments.brige2 = [
+            [2,2,2,2,2,2,2,2,2,2],
+            [2,2,2,2,2,2,2,2,2,2],
+            [C,2,2,2,2,2,2,2,2,C],
+            [2,0,0,0,0,0,0,0,0,2],
+            [2,0,0,0,0,0,0,0,0,2],
+            [2,2,2,E,2,2,2,2,2,2],
+        ];
 
 
         return segments;
+    }
+
+
+    shuffle(array) {
+        let currentIndex = array.length;
+
+        while (currentIndex != 0) {
+
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+
     }
 }

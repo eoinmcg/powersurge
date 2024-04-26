@@ -14,11 +14,6 @@ export default class Bullet extends Base {
         this.setDepth(2) ;
         this.x = this.scene.player.x;
         this.y = this.scene.player.y + this.scene.player.w;
-    }
 
-    preUpdate() {
-        if (!this.onScreen()) {
-            this.kill();
-        }
     }
 }

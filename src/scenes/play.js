@@ -40,7 +40,7 @@ export default class Play extends BaseScene {
 
     this.bg.scrollFactorY = 0.5;
 
-    this.levelData = new Mapgen(config, this, mapHeight);
+    this.levelData = new Mapgen(config, this, this.data.level);
     this.bg.height = this.map.heightInPixels;
 
     this.player = new Player(this, {x: 10, y: 3}, );
@@ -49,6 +49,7 @@ export default class Play extends BaseScene {
     this.lazers = []; // enemy projectiles
     this.bullets = []; // player projectiles
     this.shocks = []; // shock tile
+    this.splats = [];
 
 
     this.physics.add.overlap(this.player, this.baddies, this.hitBaddie, null, this);
@@ -293,7 +294,7 @@ export default class Play extends BaseScene {
     if (this.flash.activeTween) return;
     this.tweens.add({
       targets: this.flash,
-      scale: 500,
+      scale: 600,
       yoyo: yoyo,
       duration: speed,
       onComplete: () => {
@@ -313,6 +314,7 @@ export default class Play extends BaseScene {
           fontSize: '42px'
         });
       this.completeText.setOrigin(0.5, 0.5);
+      this.flashBg(0x9de64e, 1000, false);
       this.tweens.add({
         targets: this.completeText,
         y: startY,
@@ -375,6 +377,7 @@ export default class Play extends BaseScene {
     this.replayButton = this.add.text(this.cameras.main.centerX,
       this.gameOverText.y + 50, 'REPLAY', { fontFamily: 'silkscreen'})
       .setOrigin(0.5)
+      .setDepth(0)
       .setPadding(10)
       .setFixedSize(90, 40)
       .setStyle({ align: 'center' })
@@ -385,6 +388,9 @@ export default class Play extends BaseScene {
         if (!this.started) {
           this.started = true;
           this.sfx('blip');
+          this.splats.forEach((s) => {
+            s.destroy();
+          });
           this.scene.start('play', this.data);
         }
       })

@@ -43,6 +43,7 @@ export default class Player extends Base {
         this.movingTo = false;
 
         this.body.setSize(4, 4);
+        this.turns = 0;
 
     }
 
@@ -50,6 +51,7 @@ export default class Player extends Base {
     takeTurn(x, y, skip = false, shoot = false) {
         let duration = 200;
         this.scene.updateTiles();
+        this.turns += 1;
         if (skip) {
             return this.skipTurn(duration);
         } else if (shoot) {
