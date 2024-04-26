@@ -64,6 +64,7 @@ export default class Mapgen {
 
         keys = this.shuffle(keys);
         window.keys = keys;
+        console.log('KEYS: ', keys);
 
         let data = [];
 
