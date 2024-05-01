@@ -95,7 +95,7 @@ export default class Play extends BaseScene {
 
     this.overlay = this.add.image(-this.config.width,0,'overlay').setOrigin(0, 0).setDepth(10);
 
-    if (this.data.level === 1) {
+    if (this.data.level === 1 && !this.hasTouch) {
       this.helpText = this.add.text(this.centerX, 70, 'H FOR HELP', {
         color: 'white',
         fontFamily: 'silkscreen',
@@ -116,6 +116,7 @@ export default class Play extends BaseScene {
 
     this.turn = this.add.image(300, 25, 'turn').setFrame(0).setScale(2.5);
     this.updateTiles();
+
   }
 
   pollInput() {
@@ -126,6 +127,29 @@ export default class Play extends BaseScene {
     else if (this.justDown('down')) { y = 1; }
     else if (this.justDown('x')) { skip = true; }
     else if (this.justDown('z')) { shoot = true; }
+
+    if (this.swiper.active && this.swiper.dir) {
+      switch (this.swiper.dir) {
+        case 'up':
+          x = 0; y = -1;
+        break;
+        case 'down':
+          x = 0; y = 1;
+        break;
+        case 'left':
+          x = -1; y = 1;
+        break;
+        case 'right':
+          x = 1; y = 1;
+        break;
+        case 'x':
+          x = 0; y = 0; shoot = true;
+        break;
+        default:
+        break;
+      }
+      this.swiper.clear();
+    }
 
     return [x, y, skip, shoot];
   }

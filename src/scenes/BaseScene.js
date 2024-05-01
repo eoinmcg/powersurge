@@ -2,8 +2,8 @@ import * as Phaser from 'phaser';
 import config from '../config.json';
 import sfx from '../helpers/sfx';
 
-
 import Spark from '../ents/spark';
+import Swiper from '../helpers/swiper';
 
 export default class BaseScene extends Phaser.Scene {
   constructor(key) {
@@ -32,6 +32,10 @@ export default class BaseScene extends Phaser.Scene {
     this.keys.z = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     this.keys.x = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
     this.keys.esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+    this.hasTouch = window.matchMedia("(pointer: coarse)").matches;
+
+    this.swiper = new Swiper();
     window.S = this;
   }
 

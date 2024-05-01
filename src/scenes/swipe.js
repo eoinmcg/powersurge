@@ -1,20 +1,20 @@
-import * as Phaser from 'phaser';
 import BaseScene from './BaseScene';
 import config from '../config.json';
-import sfx from '../helpers/sfx';
+
+import Swiper from '../helpers/swiper';
 
 
-export default class Help extends BaseScene {
+export default class Swipe extends BaseScene {
 
   constructor() {
-    super('help');
+    super('swipe');
   }
 
 
   create() {
     document.querySelector('#game canvas').style.backgroundColor = '#222';
     this.cameras.main.fadeIn(1000, 0, 0, 0);
-    let text = 'How to play';
+    let text = 'SWIPE!';
     let startY = this.cameras.main.scrollY + (config.height / 2);
     this.text = this.add.text(this.centerX, startY -200, text, {
         color: 'hotpink',
@@ -23,62 +23,34 @@ export default class Help extends BaseScene {
       });
     this.text.setOrigin(0.5, 0.5);
 
-let controls = `
-Move = cursor keys.
-Z = shoot.
-X = skip turn.
-`;
 
-if (this.hasTouch) {
-controls = `
-Swipe to move.
-Tap to shoot.
-`;
-}
-
-this.hint = `
-A turn based arcade game.\n
-${controls}
-Journey to the heart of
-the machine and
-power it off!
-
-You are our only hope!
-`;
-    this.hintText = this.add.text(20, 100, '', {
+    this.statusText = this.add.text(20, 100, '', {
         color: 'white',
         fontFamily: 'silkscreen',
         fontSize: '18px'
       });
 
-    this.updateHint();
+    this.lastMove = false;
 
-    this.time.delayedCall(2000, () => {
-      this.addBackButton();
-    });
+
+    this.swiper = new Swiper()
+
+    this.addBackButton();
 
   }
 
-
-  updateHint() {
-    let currentLength = this.hintText.text.length;
-    if (currentLength === this.hint.length) {
-      return;
-    }
-    let letter = this.hint.charAt(currentLength);
-    let text = this.hintText.text + letter;
-    this.hintText.setText(text);
-
-    this.time.delayedCall(20, () => {
-      if (letter != ' ') sfx('cut');
-      this.updateHint();
-    });
+  update(time, delta) {
+    let dir = this.swiper.dir;
+    this.statusText.setText(dir);
+    // this.swiper.clear();
   }
+
+
 
 
   addBackButton() {
     const button = this.add.text(60,
-      800, 'PLAY >', { fontFamily: 'silkscreen'})
+      800, '< BACK', { fontFamily: 'silkscreen'})
       .setOrigin(0.5)
       .setPadding(10)
       .setFixedSize(80, 40)
@@ -110,4 +82,5 @@ You are our only hope!
   }
 
 }
+
 

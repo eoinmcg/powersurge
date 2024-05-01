@@ -11,6 +11,8 @@ export default class Start extends BaseScene {
 
   create() {
     document.querySelector('#game canvas').style.backgroundColor = '#222';
+    this.startText = (this.hasTouch)
+      ? 'TAP ME' : 'PRESS A KEY';
     this.cameras.main.fadeIn(1000, 0, 0, 0);
     let text = '@eoinmcg presents';
     let startY = this.cameras.main.scrollY + (config.height / 2);
@@ -26,7 +28,7 @@ export default class Start extends BaseScene {
       duration: 1000,
       ease: 'Ease.In',
       onComplete: () => {
-          this.promptText = this.add.text(this.centerX, config.height - 100, 'PRESS A KEY', {
+          this.promptText = this.add.text(this.centerX, config.height - 100, this.startText, {
               color: 'white',
               fontFamily: 'silkscreen',
               fontSize: '16px'

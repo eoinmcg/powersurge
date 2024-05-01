@@ -9,6 +9,7 @@ import Play from './src/scenes/play';
 import Intro from './src/scenes/intro';
 import Help from './src/scenes/help';
 import Credits from './src/scenes/credits';
+import Swipe from './src/scenes/swipe';
 
 const game = {
   type: Phaser.AUTO,
@@ -27,7 +28,7 @@ const game = {
       debug: false
     }
   },
-  scene: [ Loader, Start, Splash, Play, Intro, Credits, Help ]
+  scene: [ Loader, Start, Splash, Play, Intro, Credits, Help, Swipe ]
 };
 
 new Phaser.Game(game);
