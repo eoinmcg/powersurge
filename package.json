@@ -1,5 +1,6 @@
 {
   "name": "PowerSurge",
+  "description": "A fast, turn based arcade style game",
   "private": true,
   "version": "0.1.5",
   "type": "module",
